@@ -34,6 +34,14 @@ Brander test task: Учет работы сотрудников
 
 в папке проекта VirtualBox, Ansible, Vagrant (Установка: https://habrahabr.ru/post/305400/)
 
+Для работы на Windows, необходимо также выполнить (На Linux все работает из коробки):
+
+```
+vagrant plugin install vagrant-vbguest
+vagrant-vbguest 
+vagrant plugin install vagrant-winnfsd
+```
+
 Билд проекта:
 
 ```
