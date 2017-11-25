@@ -1,0 +1,35 @@
+user:
+    email: 'Уже используется, попробуйте авторизироваться'
+
+security:
+    login:
+        username: 'Имя пользователя'
+        password: Пароль
+        remember_me: 'Запомнить меня'
+        submit: Войти
+
+registration:
+    check_email: 'Письмо отправлено на адрес %email%. В нём содержится ссылка, по которой вы можете подтвердить свою регистрацию.'
+    confirmed: 'Поздравляем, ваш аккаунт подтвержден и скоро будет повешен в списке'
+    back: 'Вернуться на предыдущую страницу.'
+    submit: Зарегистрироваться
+    flash:
+        user_created: 'Поздравляем %username%, ваш аккаунт подтвержден и скоро будет повешен в списке'
+form:
+    group_name: 'Название группы'
+    username: 'Имя пользователя'
+    email: 'Электронная почта'
+    current_password: 'Текущий пароль'
+    password: Пароль
+    password_confirmation: 'Подтвердите пароль'
+    new_password: 'Новый пароль'
+    new_password_confirmation: 'Подтвердите пароль'
+
+    first_name: 'Ваше имя'
+    last_name: 'Фамилия'
+    gender: 'Ваш пол'
+    total_vno_score: 'Сумма тестов ЗНО'
+    group_number: 'Номер группы'
+    birth_year: 'Год рождения'
+    is_resident: 'Вы из Харькова?'
+
