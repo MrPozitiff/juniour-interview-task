@@ -24,7 +24,7 @@ class HelpersController extends Controller
      */
     public function getRepo($entity)
     {
-        return $this->getDoctrine()->getManager()->getRepository("AppBundle:$entity");
+        return $this->getDoctrine()->getManager()->getRepository("AppBundle:".$entity);
     }
 
     /**

@@ -2,11 +2,53 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}View all employees!{% endblock %}</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
         {% block stylesheets %}{% endblock %}
+
+        <script src="{{ asset('source/js/jquery.min.js') }}"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        {% block js_source %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        {% block header %}
+            <div id="heading-breadcrumbs">
+                <div class="container">
+                    <div class="row">
+
+                        {% if app.request.get('_route') == 'view_by_job' %}
+                            <div class="col-md-7">
+                                <h1>{{ data.current_job.name }}</h1>
+                            </div>
+                            <div class="col-md-5">
+                                <ul class="breadcrumb">
+                                    <li><a href="{{ path('homepage') }}">Home</a>
+                                    </li>
+                                    <li>{{ data.current_job.name }}</li>
+                                </ul>
+                            </div>
+
+                        {% else %}
+
+                            <div class="col-md-7">
+
+                                <h1>Homepage for all Employees</h1>
+                            </div>
+                            <div class="col-md-5">
+                                <ul class="breadcrumb">
+                                    <li><a href="{{ path('homepage') }}">Home</a>
+                                    </li>
+                                    <li>All employees</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

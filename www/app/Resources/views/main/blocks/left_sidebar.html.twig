@@ -1,0 +1,20 @@
+<div class="col-sm-3">
+    <div class="panel panel-default sidebar-menu">
+
+        <div class="panel-heading">
+            <h3 class="panel-title">Positions</h3>
+        </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked category-menu">
+                {% for job in data.jobs %}
+                    <li {% if app.request.get('_route_params')['job'] is defined and app.request.get('_route_params')['job'] == job.urlPath %}class="active"{% endif %}>
+                        <a href="{{ path('view_by_job', {'job' : job.urlPath}) }}">{{ job.name }} <span class="badge pull-right">{{ job.EmployeesCount }}</span></a>
+                    </li>
+                {% endfor %}
+
+            </ul>
+
+        </div>
+    </div>
+</div>
