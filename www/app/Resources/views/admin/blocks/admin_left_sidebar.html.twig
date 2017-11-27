@@ -1,0 +1,23 @@
+<div class="col-sm-3">
+    <div class="panel panel-default sidebar-menu">
+
+        <div class="panel-heading">
+            <h3 class="panel-title">Edit Params</h3>
+        </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked category-menu">
+                <li {% if app.request.get('route') == 'admin_employees' %}class="active"{% endif %}>
+                    <a href="{{ path('admin_employees') }}">Employees</a>
+                </li>
+                <li {% if app.request.get('route') == 'admin_jobs' %}class="active"{% endif %}>
+                    <a href="{{ path('admin_jobs') }}">Positions</a>
+                </li>
+                <li {% if app.request.get('route') == 'admin_days_off' %}class="active"{% endif %}>
+                    <a href="{{ path('admin_days_off') }}">Days Off</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

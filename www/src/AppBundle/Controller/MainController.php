@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Employee;
 use AppBundle\Repository\EmployeePositionRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,16 +23,13 @@ class MainController extends HelpersController
      */
     public function indexAction($page = 1, $json = false)
     {
-        $data['jobs'] = $this->getJobsData();
-
-        $data = array_merge(
-            $data,
-            $this->getEmployeePaginatorData($page)
-        );
+        $data = $this->getEmployeePaginatorData($page);
 
         if ($json) {
             return $this->json($data);
         }
+
+        $data['jobs'] = $this->getJobsData();
 
         return $this->render('default/index.html.twig', [
             'data' => $data,
@@ -48,6 +46,45 @@ class MainController extends HelpersController
     {
         return $this->indexAction($page);
     }
+
+    /**
+     * @param $id
+     * @param bool $json
+     * @return JsonResponse|Response
+     *
+     * @Route("/employee/{id}", name="employee_info")
+     */
+   public function viewUserAction($id, $json = false)
+   {
+       /**
+        * @var $employee Employee
+        */
+       $employee = $this->getRepo('Employee')->findOneBy(['id' => $id]);
+       $data['employee'] = $employee;
+       $now = new \DateTime('now');
+
+       $data['month_count'] = $now->diff($employee->getEmploymentDate())->m;
+       $data['weekends'] = $this->getParameter('working_days_per_week') + 1;
+
+       if (is_null($data['employee'])) {
+           if ($json) {
+               return $this->json(['error' => 'Date not found']);
+           }
+           throw $this->createNotFoundException('Employee not found!');
+       }
+
+       if ($json) {
+           return $this->render(':main/blocks:modal_user_info.html.twig', [
+              'employee' => $data['employee'],
+           ]);
+       }
+
+       $data['jobs'] = $this->getJobsData();
+
+       return $this->render('main/employee_info.html.twig', [
+           'data' => $data,
+       ]);
+   }
 
     /**
      * @param $job string
@@ -72,8 +109,6 @@ class MainController extends HelpersController
             throw $this->createNotFoundException($job.' page not found:(');
         }
 
-        $data['jobs'] = $job_repo->findAll();
-
         $data = array_merge(
             $data,
             $this->getEmployeePaginatorData($page, $data['current_job'])
@@ -82,6 +117,8 @@ class MainController extends HelpersController
         if ($json) {
             return $this->json($data);
         }
+
+        $data['jobs'] = $job_repo->findAll();
 
         return $this->render('default/index.html.twig', [
             'data' => $data,

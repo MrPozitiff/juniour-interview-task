@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ data.employee.firstName ~ ' ' ~ data.employee.lastName }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('source/css/zabuto_calendar.css') }}">
+    <style>
+        div.zabuto_calendar .table tr.calendar-dow td:nth-child(n+{{ data.weekends }}) {
+            background-color: #80cbd9;
+        }
+    </style>
+{% endblock %}
+
+{% block js_source %}
+    <script src="{{ asset('source/js/zabuto_calendar.js') }}"></script>
+{% endblock %}
+
+{% block header %}
+    <div id="heading-breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <h1>{{ data.employee.firstName ~ ' ' ~ data.employee.lastName }}</h1>
+                </div>
+                <div class="col-md-5">
+                    <ul class="breadcrumb">
+                        <li><a href="{{ path('homepage') }}">Home</a>
+                        </li>
+                        <li><a href="{{ path('view_by_job', {'job' : data.employee.employeePosition.urlPath }) }}">{{ data.employee.employeePosition.name }}</a></li>
+                        <li>{{ data.employee.firstName ~ ' ' ~ data.employee.lastName }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="col-md-9">
+
+        <div class="row" id="employeeMain">
+            <div class="col-sm-6">
+                <div id="mainImage">
+                    <img src="{{ asset('uploads/media/img/') ~ data.employee.photo }}" alt="" class="img-responsive">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="box">
+                    <p class="price">Work Off Calendar: </p>
+                    <div id="my-calendar"></div>
+                    <!--<form>
+                        <p class="price">Price: </p>
+                        <p class="price">${{ data.employee.salaryRate }}</p>
+                        <p class="text-center">
+                            <button type="submit" class="btn btn-template-main" disabled><i class="fa fa-shopping-cart" ></i> Add to cart</button>
+                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add to wishlist" disabled><i class="fa fa-heart-o"></i>
+                            </button>
+                        </p>
+                    </form>-->
+                </div>
+            </div>
+        </div>
+
+
+        <div class="box" id="details">
+            <table class="table table-user-information">
+                <tbody>
+                <tr>
+                    <td>Position:</td>
+                    <td id="user_position">{{ data.employee.employeePosition.name }}</td>
+                </tr>
+                <tr>
+                    <td>Hire date:</td>
+                    <td id="user_hire_date">{{ data.employee.employmentDate | date('Y/m/d') }}</td>
+                </tr>
+
+                <tr>
+                <tr>
+                    <td>Salary rate:</td>
+                    <td id="user_salary_rate">{{ data.employee.salaryRate }}</td>
+                </tr>
+                <tr>
+                    <td>Absent days:</td>
+                    <td id="user_workoff_days">{{ data.employee.workOffDaysCount }}</td>
+                </tr>
+                <tr>
+                    <td>Total salary:</td>
+                    <td id="user_workoff_days">
+                        {% if data.employee.totalSalary is not null %}
+                            {{ data.employee.totalSalary }}
+                        {% else %}
+                            <a href="#" onclick="calculateTotalSalary({{ data.employee.id }})" type="button" class="btn btn-sm btn-info"><i class="fa fa-calculator "> Calculate</i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                {% if data.employee.SalaryLastCalculatedAt is not null %}
+                    <tr>
+                        <td>Calculated at:</td>
+                        <td id="total_salary_calc_at">{{  data.employee.SalaryLastCalculatedAt | date('Y/m/d') }}<br>
+                            <a href="#" onclick="calculateTotalSalaryModal({{ data.employee.id }})" type="button" class="btn btn-sm btn-info"><i class="fa fa-calculator "> Recalculate</i></a>
+                        </td>
+                    </tr>
+                {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+        <script type="application/javascript">
+
+            $(document).ready(function () {
+                var eventData = "";
+                $.ajax({
+                    url: "{{ path('get_work_off_days_api') }}",
+                    method: 'POST',
+                    async: false,
+                    data: {'id': {{ data.employee.id }} },
+                    success: function(data) {
+                        eventData = data.response;
+                    }
+                });
+
+                $("#my-calendar").zabuto_calendar({
+                    language: "en",
+                    show_previous: {{ data.month_count }},
+                    show_next: false,
+                    today: true,
+                    data: eventData,
+                    legend: [
+                        {type: "block", label: "Weekend", classname: "badge-weekend"},
+                        {type: "block", label: "Non working day", classname: "badge-event"},
+                        {type: "block", label: "today", classname: "badge-today"}
+                    ]
+                });
+            });
+        </script>
+{% endblock %}

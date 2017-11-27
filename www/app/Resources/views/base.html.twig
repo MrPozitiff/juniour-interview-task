@@ -5,51 +5,77 @@
         <title>{% block title %}View all employees!{% endblock %}</title>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ asset('source/css/main.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('source/css/style.css') }}">
         {% block stylesheets %}{% endblock %}
 
         <script src="{{ asset('source/js/jquery.min.js') }}"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="{{ asset('source/js/main.js') }}"></script>
         {% block js_source %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block header %}
-            <div id="heading-breadcrumbs">
+        <div id="all">
+        {% include 'main/blocks/nav_bar.html.twig' %}
+            {% block header %}
+                <div id="heading-breadcrumbs">
+                    <div class="container">
+                        <div class="row">
+
+                            {% if app.request.get('_route') == 'view_by_job' %}
+                                <div class="col-md-7">
+                                    <h1>{{ data.current_job.name }}</h1>
+                                </div>
+                                <div class="col-md-5">
+                                    <ul class="breadcrumb">
+                                        <li><a href="{{ path('homepage') }}">Home</a>
+                                        </li>
+                                        <li>{{ data.current_job.name }}</li>
+                                    </ul>
+                                </div>
+
+                            {% else %}
+
+                                <div class="col-md-7">
+
+                                    <h1>Homepage for all Employees</h1>
+                                </div>
+                                <div class="col-md-5">
+                                    <ul class="breadcrumb">
+                                        <li><a href="{{ path('homepage') }}">Home</a>
+                                        </li>
+                                        <li>All employees</li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    {% include 'main/blocks/after_navbar.html.twig' %}
+                {% endif %}
+            {% endblock %}
+            <div class="section">
                 <div class="container">
                     <div class="row">
 
-                        {% if app.request.get('_route') == 'view_by_job' %}
-                            <div class="col-md-7">
-                                <h1>{{ data.current_job.name }}</h1>
-                            </div>
-                            <div class="col-md-5">
-                                <ul class="breadcrumb">
-                                    <li><a href="{{ path('homepage') }}">Home</a>
-                                    </li>
-                                    <li>{{ data.current_job.name }}</li>
-                                </ul>
-                            </div>
+                        {% include 'main/blocks/left_sidebar.html.twig' %}
 
-                        {% else %}
+                        {% block body %}
 
-                            <div class="col-md-7">
-
-                                <h1>Homepage for all Employees</h1>
-                            </div>
-                            <div class="col-md-5">
-                                <ul class="breadcrumb">
-                                    <li><a href="{{ path('homepage') }}">Home</a>
-                                    </li>
-                                    <li>All employees</li>
-                                </ul>
-                            </div>
-                        {% endif %}
+                        {% endblock %}
                     </div>
                 </div>
             </div>
-        {% endblock %}
+            {% include 'main/blocks/footer.html.twig' %}
+        </div>
+        <script type="text/javascript">
+            var employee_info_api = "{{ path('employee_info_api') }}";
+            var salary_calc_api = "{{ path('salary_calc_api') }}";
 
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        </script>
+        {% block javascripts %}
+        {% endblock %}
     </body>
 </html>

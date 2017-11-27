@@ -1,8 +1,20 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-    <div class="form-group">
-        <div class="col-sm-9 col-sm-offset-2">
-            <input type="submit" value="Submit" class="btn btn-primary btn-block"/>
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}
+    Edit Employee
+{% endblock %}
+
+{% block body %}
+
+    <div class="col-md-9">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="hidden" name="work_off_days" id="work_off_days" value="">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-2">
+                <input type="submit" value="Submit" class="btn btn-primary btn-block"/>
+            </div>
         </div>
     </div>
-{{ form_end(form) }}
+    {{ form_end(form) }}
+{% endblock %}

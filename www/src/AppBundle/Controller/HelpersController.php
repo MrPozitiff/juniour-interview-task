@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class HelpersController extends Controller
 {
-    private $results_per_page = 20;
+    private $results_per_page = 5;
 
     // Helpers
 

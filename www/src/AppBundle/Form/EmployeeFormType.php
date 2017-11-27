@@ -27,7 +27,9 @@ class EmployeeFormType extends AbstractType
             ])
             ->add('employmentDate', DateType::class)
             ->add('salaryRate', MoneyType::class)
-            ->add('file', FileType::class);
+            ->add('file', FileType::class, [
+                'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

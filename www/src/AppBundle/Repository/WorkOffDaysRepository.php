@@ -12,15 +12,35 @@ use AppBundle\Entity\Employee;
  */
 class WorkOffDaysRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param Employee $employee
+     * @param $lastCheck \DateTime
+     * @return bool
+     */
     public function isCheckedDaysValid(Employee $employee, $lastCheck)
     {
         $query = $this->createQueryBuilder('wod')
             ->where('wod.employee = :name')
             ->andWhere('wod.isChecked <> true')
             ->andWhere('wod.date < :last_check')
-            ->setParameters(['name' => $employee, 'last_check' => $lastCheck])->getFirstResult();
+            ->setParameters(['name' => $employee, 'last_check' => $lastCheck])
+            ->getQuery()
+            ->getResult();
 
-        // TODO: Continue DaysOff Checking
-            //->getQuery();
+        if (is_null($query)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getSortedDaysOff(Employee $employee)
+    {
+        $query = $this->createQueryBuilder('wod')
+            ->where('wod.employee = :name')
+            ->setParameter('name', $employee)
+            ->orderBy('wod.date', 'ASC')
+            ->getQuery();
+
+        return $query->getResult();
     }
 }

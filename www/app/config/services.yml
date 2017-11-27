@@ -32,3 +32,8 @@ services:
     redirect.after.success.register:
         class: AppBundle\EventListener\RedirectAfterSuccessRegister
         autowire: true
+
+    salary.calculate.model:
+        class: AppBundle\Model\SalaryCalculateModel
+        arguments: ['%working_hours_per_day%', '%working_days_per_week%']
+        public: true

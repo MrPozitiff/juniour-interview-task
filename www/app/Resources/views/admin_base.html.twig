@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}View all employees!{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('source/css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('source/css/style.css') }}">
+    {% block stylesheets %}{% endblock %}
+
+    <script src="{{ asset('source/js/jquery.min.js') }}"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="{{ asset('source/js/main.js') }}"></script>
+    {% block js_source %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+    <div id="all">
+
+        <div id="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-5 contact">
+                        <p class="hidden-sm hidden-xs">Hello, {{ app.user.Username }}!</p>
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="login">
+                            <a href="{{ path('admin_dashboard') }}"><i class="fa fa-wrench" aria-hidden="true"></i> <span class="hidden-xs text-uppercase">Dashboard</span></a>
+                            <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> <span class="hidden-xs text-uppercase">Logout</span></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'main/blocks/after_navbar.html.twig' %}
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    {% include 'admin/blocks/admin_left_sidebar.html.twig' %}
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

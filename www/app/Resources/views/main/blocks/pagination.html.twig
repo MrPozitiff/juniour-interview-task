@@ -1,0 +1,20 @@
+<!-- Begin pagination -->
+<div class="pages">
+    {#
+    <p class="loadMore">
+        <a href="{{ path('main_pagination_api') }}" class="btn btn-template-main"><i class="fa fa-chevron-down"></i> Load more</a>
+    </p>
+    #}
+
+    <ul class="pagination">
+        {% for i in 1..(data.pages_count) %}
+        <li {{ (data.current_page = 1)? 'class="active"' }}><a href="{{ path('home_paginator', {'page' : (data.current_page - 1) }) }}">&laquo;</a>
+        </li>
+        <li {{ (data.current_page = i)? 'class="active"' }}><a href="{{ path('home_paginator', {'page' : i }) }}">{{ i }}</a>
+        </li>
+        <li {{ (data.current_page = data.pages_count)? 'class="active"' }}><a href="{{ path('home_paginator', {'page' : (data.current_page + 1) }) }}">&raquo;</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<!-- End pagination -->

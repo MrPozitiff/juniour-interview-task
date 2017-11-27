@@ -1,0 +1,90 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}
+    Edit Employee
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('source/css/zabuto_calendar.css') }}">
+    <style>
+        div.zabuto_calendar .table tr.calendar-dow td:nth-child(n+{{ weekends }}) {
+            background-color: #80cbd9;
+        }
+    </style>
+{% endblock %}
+
+{% block js_source %}
+    <script src="{{ asset('source/js/zabuto_calendar.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+
+<div class="col-md-9">
+    <div class="row" id="employeeMain">
+        <div class="col-sm-6">
+            <div id="mainImage">
+                {% if form.vars.value.photo is not null %}
+                    <img src="{{ asset('uploads/media/img/' ~ form.vars.value.photo) }}" width="400px" />
+                {% else %}
+                    <img src="{{ asset('source/img/not-found.png') }}" />
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="box">
+                <p class="price">Work Off Calendar: </p>
+                <div id="my-calendar">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="hidden" name="work_off_days" id="work_off_days" value="">
+    <div class="form-group">
+        <div class="col-sm-9 col-sm-offset-2">
+            <input type="submit" value="Submit" class="btn btn-primary btn-block"/>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+            $(document).ready(function () {
+                var eventData = "";
+                $.ajax({
+                    url: "{{ path('get_work_off_days_api') }}",
+                    method: 'POST',
+                    async: false,
+                    data: {'id': {{ employee_id }} },
+                    success: function(data) {
+                        eventData = data.response;
+                    }
+                });
+
+                $("#my-calendar").zabuto_calendar({
+                    language: "en",
+                    show_previous: {{ month_count }},
+                    show_next: false,
+                    today: true,
+                    data: eventData,
+                    legend: [
+                        {type: "block", label: "Weekend", classname: "badge-weekend"},
+                        {type: "block", label: "Non working day", classname: "badge-event"},
+                        {type: "block", label: "Today", classname: "badge-today"},
+                        {type: "block", label: "Selected day", classname: "badge-selected"}
+                    ],
+                    action: function() {
+                        setEmployeeDayOff(this.id);
+                    }
+
+                });
+            });
+
+
+    </script>
+{% endblock %}

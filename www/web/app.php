@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 
 const WEB_PATH_DIR = __DIR__;
+ini_set('max_execution_time', 300);
 
 require __DIR__.'/../vendor/autoload.php';
 if (PHP_VERSION_ID < 70000) {

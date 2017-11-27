@@ -1,5 +1,4 @@
 <header>
-
     <div id="top">
         <div class="container">
             <div class="row">
@@ -13,7 +12,7 @@
 
                         {% if is_granted('ROLE_USER') %}
                             {% if is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('sonata_admin_dashboard') }}"><i class="fa fa-wrench" aria-hidden="true"></i> <span class="hidden-xs text-uppercase">Admin Panel</span></a>
+                                <a href="{{ path('admin_dashboard') }}"><i class="fa fa-wrench" aria-hidden="true"></i> <span class="hidden-xs text-uppercase">Admin Panel</span></a>
                             {% endif %}
                             <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> <span class="hidden-xs text-uppercase">Logout</span></a>
                         {% else %}
@@ -33,8 +32,8 @@
 
                 <div class="navbar-header">
                     <a class="navbar-brand home" href="{{ path('homepage') }}">
-                        <img src="" alt="Test for Itera Research" class="hidden-xs hidden-sm">
-                        <img src="" alt="Test for Itera Research" class="visible-xs visible-sm"><span class="sr-only"></span>
+                        <img src="" alt="Salary Calculator" class="hidden-xs hidden-sm">
+                        <img src="" alt="Salary Calculator" class="visible-xs visible-sm"><span class="sr-only"></span>
                     </a>
                     <div class="navbar-buttons">
                         <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
@@ -48,9 +47,9 @@
                 <div class="navbar-collapse collapse" id="navigation">
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li {% if app.request.get('_route') == 'homepage' %}class="active"{% endif %}><a href="{{ path('homepage') }}">Homepage</a></li>
-                        <li {% if app.request.get('_route') == 'category_view' %}class="active"{% endif %}><a href="{{ path('random_category') }}">Random Category</a></li>
-                        <li {% if app.request.get('_route') == 'product_view' %}class="active"{% endif %}><a href="{{ path('random_product') }}">Random Product</a></li>
+                        <li {% if app.request.get('_route') == 'homepage' or app.request.get('_route') == 'home_paginator'%}class="active"{% endif %}><a href="{{ path('homepage') }}">Homepage</a></li>
+                        <li {% if app.request.get('_route') == 'view_by_job' %}class="active"{% endif %}><a href="#">Job Page</a></li>
+                        <li {% if app.request.get('_route') == 'employee_info' %}class="active"{% endif %}><a href="#">Employee Page</a></li>
                     </ul>
 
                 </div>

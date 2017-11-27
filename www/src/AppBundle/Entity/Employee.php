@@ -52,7 +52,7 @@ class Employee
     /**
      * @var string
      *
-     * @ORM\Column(name="photo", type="string", length=255)
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
     private $photo;
 
@@ -111,6 +111,17 @@ class Employee
     public function __construct()
     {
         $this->workOffDays = new ArrayCollection();
+    }
+
+    public function toArray()
+    {
+        $array = get_object_vars($this);
+        unset($array['workOffDays']);
+        $array['photo'] = $this->getWebPath();
+        $array['employmentDate'] = $this->getEmploymentDate()->format('Y/m/d');
+        $array['employeePosition'] = $this->getEmployeePosition()->getName();
+
+        return $array;
     }
 
     /**
@@ -309,6 +320,14 @@ class Employee
     {
         $this->salaryLastCalculatedAt = $salaryLastCalculatedAt;
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWorkOffDaysCount()
+    {
+        return count($this->workOffDays);
     }
 
     /**
